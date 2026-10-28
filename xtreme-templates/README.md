@@ -7,6 +7,8 @@ Plus `cheat_sheet.txt` (about 7 KB, plain text): time limits by input size, whic
 to use for which problem, formulas, a pitfall checklist, input shapes, a stress-test loop
 and contest strategy. Upload it as an extra file so you can read it in locked tasks.
 
+See `UPLOAD_GUIDE.md` for how to get the files, test them and upload them to CS Academy.
+
 **Size limit: 100 KB for your whole upload.** Each full file is 34–44 KB, so upload only the
 languages your team uses, and delete sections you don't want.
 
