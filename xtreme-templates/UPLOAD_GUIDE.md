@@ -104,16 +104,14 @@ The official announcement says you can do three things at
 
 Steps:
 
-1. **Log in to CS Academy** with the account you will use in the contest.
-   - If you're not sure which account will be used, **do it for every team member's account**.
+1. **Log in to CS Academy** 
+   - **do it for every team member's account**.
 2. Open **csacademy.com/workspace/template**.
 3. Set the **starting code** for each language you'll use.
 4. Add your **template file(s)** and **cheat_sheet.txt** as extra files.
 5. Check that the total is **under 100 KB**.
 6. Finish **before the deadline**. Changes cannot be made once a task has started.
 
-> The exact buttons on that page may differ from this description. If something is unclear,
-> ask your proctor or email **IEEEXtreme@ieee.org** before the deadline, not on contest day.
 
 ---
 
