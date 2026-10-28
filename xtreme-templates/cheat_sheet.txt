@@ -1,0 +1,136 @@
+IEEEXtreme 20.0 - CHEAT SHEET (text only, nothing to submit)
+==============================================================
+
+1. WHAT FITS THE TIME LIMIT (about 10^8 simple steps per second in C++,
+   about 10^7 in PyPy, about 10^6 to 10^7 in plain Python)
+--------------------------------------------------------------
+  n <= 10        O(n!)        try all permutations
+  n <= 20        O(2^n * n)   bitmask: try all subsets, bitmask DP
+  n <= 100       O(n^4)
+  n <= 500       O(n^3)       Floyd-Warshall, 3 nested loops
+  n <= 5000      O(n^2)       2 nested loops, O(n^2) DP
+  n <= 2*10^5    O(n log n)   sort, binary search, heap, segment tree, Dijkstra
+  n <= 10^7      O(n)         one pass, two pointers, prefix sums, sieve
+  n >= 10^9      O(log n) / O(sqrt n) / formula   binary search, fast power, math
+  Values up to 10^18 -> C++ long long / Rust i64; Python ints are always fine.
+
+2. WHICH TEMPLATE SECTION?
+--------------------------
+  "minimum X such that ..." / "maximum X such that ..."   -> 3 binary search on answer
+  many sum questions on a fixed array                     -> 2 prefix sums (14 for grids)
+  sums/min with UPDATES                                   -> 10 Fenwick / 16 segment tree
+  add to a whole range + queries                          -> 17 lazy segment tree
+  grid maze, shortest steps                               -> 4 BFS on grid
+  graph, all edges cost 1                                 -> 5 BFS
+  graph, weights >= 0                                     -> 6 Dijkstra
+  graph, negative weights / negative cycle                -> 32 Bellman-Ford
+  all pairs, n <= 400                                     -> 24 Floyd-Warshall
+  "connected?" / merging groups                           -> 7 DSU, 15 components
+  cheapest way to connect everything                      -> 25 Kruskal
+  "order with prerequisites" / "is there a cycle?"        -> 11 topological sort
+  distance between two nodes in a tree                    -> 19 LCA
+  match people to jobs, max throughput                    -> 27 max flow
+  "answer modulo 10^9+7", combinations                    -> 8 modular math
+  primes up to 10^7                                       -> 9 sieve; one big number -> 37 Miller-Rabin
+  find a word in a text                                   -> 20 KMP; compare substrings -> 22 hashing
+  longest palindrome                                      -> 40 Manacher
+  values up to 10^9 as array indices                      -> 35 coordinate compression
+  "talk to the judge / play against a bot"                -> 13 interactive I/O
+
+3. FORMULAS
+-----------
+  1 + 2 + ... + n            = n(n+1)/2
+  1^2 + 2^2 + ... + n^2      = n(n+1)(2n+1)/6
+  1^3 + ... + n^3            = (n(n+1)/2)^2
+  1 + r + ... + r^(n-1)      = (r^n - 1)/(r - 1)        (mod p: multiply by inverse of r-1)
+  a + (a+d) + ... (n terms)  = n(2a + (n-1)d)/2
+  nCr                        = n! / (r! (n-r)!)          nCr = (n-1)C(r-1) + (n-1)Cr
+  ways to put n identical balls in k boxes = (n+k-1) C (k-1)
+  Catalan C_n                = (2n)C(n) / (n+1)          1 1 2 5 14 42 132 ...
+                               (valid bracket strings, binary trees, mountain paths)
+  derangements D_n           = (n-1)(D_{n-1} + D_{n-2})  D1=0 D2=1 D3=2 D4=9
+  inclusion-exclusion        |A or B| = |A| + |B| - |A and B|
+  lcm(a, b)                  = a / gcd(a, b) * b         (divide first)
+  number of divisors of p1^e1 * p2^e2 * ...  = (e1+1)(e2+1)...
+  inverse mod prime p        = a^(p-2) mod p
+  Fermat: a^(p-1) = 1 mod p (p prime, p does not divide a)
+  distance on a grid: Manhattan |dx|+|dy|, Chebyshev max(|dx|,|dy|), Euclid sqrt(dx^2+dy^2)
+  triangle area (integers)   = |cross(b-a, c-a)| / 2
+  Pick: area = inside + boundary/2 - 1   (polygon with integer vertices)
+  degrees to radians         = deg * pi / 180
+
+4. PITFALLS CHECKLIST (read when you get WA / TLE / RE)
+-------------------------------------------------------
+  [ ] Input 1-indexed? Subtract 1 for nodes/positions.
+  [ ] Output wording exact? "IMPOSSIBLE" vs "-1" vs "NO", spaces, newline at the end.
+  [ ] Overflow? C++: long long everywhere products/sums can pass 2*10^9.
+  [ ] Mod: take % after EVERY multiplication; (a - b) % p can be negative in C++/JS/C#/Rust.
+  [ ] Edge cases: n = 1, n = 0, all equal values, all negative, empty string.
+  [ ] Python: PyPy3 submitted? No recursion deeper than ~1000 (use the iterative versions).
+  [ ] Python: no input() / print() inside big loops; collect output and print once.
+  [ ] Hash TLE on ints (CSES / anti-hash)? Sort instead, or use string keys.
+  [ ] Game task: read one line at a time, FLUSH after every output line.
+  [ ] Multiple test cases? Reset all arrays / globals between them.
+  [ ] Floats: compare with an epsilon (abs(a - b) < 1e-9); print the required decimals.
+  [ ] Partial score: even a slow brute force earns points on small tests. Submit it.
+
+5. READING INPUT - COMMON SHAPES
+--------------------------------
+  Python
+    numbers only:        data = sys.stdin.buffer.read().split()
+    until end of input:  for line in sys.stdin: ...
+    t test cases:        t = int(input()); for _ in range(t): ...
+    grid of chars:       grid = [input().strip() for _ in range(n)]
+    line with spaces:    s = input().rstrip("\n")
+    unknown count:       nums = list(map(int, sys.stdin.read().split()))
+  C++
+    numbers only:        cin >> n;   (cin skips spaces and newlines)
+    until end of input:  while (cin >> x) { ... }   or   while (getline(cin, line)) { ... }
+    t test cases:        int t; cin >> t; while (t--) { ... }
+    grid of chars:       vector<string> g(n); for (auto& row : g) cin >> row;
+    line with spaces:    getline(cin >> ws, s);   (ws skips the leftover newline first)
+  JavaScript (template section 1)
+    numbers / words:     nextInt(), next()
+    until end of input:  next() returns undefined when the tokens run out
+    text lines:          const lines = require('fs').readFileSync(0, 'utf8').split('\n');
+                         (remove a trailing '\r': line.replace(/\r$/, ''))
+    big numbers > 9e15:  BigInt(next())
+  Rust (template section 1)
+    numbers / words:     sc.next::<i64>(), sc.word()
+    until end of input:  while sc.pos < sc.tokens.len() { ... }
+    grid of chars:       let g: Vec<Vec<u8>> = (0..n).map(|_| sc.word().into_bytes()).collect();
+    text lines:          let mut s = String::new(); io::stdin().read_to_string(&mut s).unwrap();
+                         for line in s.lines() { ... }   (do not also create the Scanner)
+  C# (template section 1)
+    numbers / words:     NextInt(), NextLong(), Next()
+    until end of input:  string line; while ((line = Console.ReadLine()) != null) { ... }
+                         (do not mix ReadLine with Next(): Next() reads ALL input at once)
+    grid of chars:       var g = new string[n]; for (int i = 0; i < n; i++) g[i] = Next();
+
+6. STRESS TEST (find why hidden tests fail)
+-------------------------------------------
+  Write brute.py (slow but obviously right), sol.py (your solution) and gen.py
+  (prints one small random test). Then run in a terminal:
+
+    for i in $(seq 1 500); do
+      python3 gen.py > in.txt
+      python3 sol.py < in.txt > a.txt
+      python3 brute.py < in.txt > b.txt
+      cmp -s a.txt b.txt || { echo "DIFFERENT on:"; cat in.txt; break; }
+    done
+
+  Other languages: replace "python3 sol.py" with how you run yours:
+    C++:  g++ -O2 -o sol sol.cpp   then  ./sol
+    Rust: rustc -O sol.rs          then  ./sol
+    JS:   node sol.js
+    C#:   mcs sol.cs (or dotnet)   then  mono sol.exe
+  brute.py and gen.py can stay in Python whatever language sol is in.
+
+7. CONTEST STRATEGY
+-------------------
+  - Read ALL problems first; if the scoreboard shows solve counts, do the most-solved first.
+  - Split problems between the three of you; never two people on the same one.
+  - 30-40 min stuck -> move on, come back later.
+  - Submit early: no penalty for resubmitting, partial points count.
+  - The FAQ warns of "surprises" about every 6-8 hours; check the problem list regularly.
+  - Sleep in shifts. Eat. A rested brain solves more than a tired one.
